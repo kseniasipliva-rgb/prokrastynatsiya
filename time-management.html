@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Тайм-менеджмент і боротьба з прокрастинацією</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#eef3f1;--surface:#fff;--ink:#14302b;--muted:#53706a;--line:#c9d8d3;--accent:#0f7a6b;--accent-ink:#fff;--warm:#f2a900;--bad:#c2410c;--good:#0f7a6b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root:not([data-theme="light"]){}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1c19;--surface:#172925;--ink:#e6f1ee;--muted:#9bb5ae;--line:#2b443e;--accent:#3fc2ae;--accent-ink:#06201b;--warm:#f5b82e;--bad:#fb923c;--good:#3fc2ae}}
+:root[data-theme="dark"]{--bg:#0f1c19;--surface:#172925;--ink:#e6f1ee;--muted:#9bb5ae;--line:#2b443e;--accent:#3fc2ae;--accent-ink:#06201b;--warm:#f5b82e;--bad:#fb923c;--good:#3fc2ae}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 Onest,system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:760px;margin:0 auto;padding:28px 18px 60px}
+h1{font-size:clamp(28px,6vw,44px);line-height:1.1;font-weight:800;margin:0 0 10px;letter-spacing:-.02em}
+h2{font-size:24px;margin:0 0 6px;font-weight:800}
+.lead{color:var(--muted);margin:0 0 22px;max-width:60ch}
+nav{display:flex;gap:6px;overflow-x:auto;margin-bottom:22px;border-bottom:2px solid var(--line)}
+nav button{flex:none;background:none;border:0;border-bottom:4px solid transparent;margin-bottom:-2px;padding:10px 12px;font:600 15px Onest,system-ui,sans-serif;color:var(--muted);cursor:pointer}
+nav button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--warm)}
+section{display:none;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+section.on{display:block}
+button.btn,.opt{font:600 16px Onest,system-ui,sans-serif;border-radius:10px;cursor:pointer}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;padding:11px 18px}
+.btn.ghost{background:none;color:var(--ink);border:1.5px solid var(--line)}
+.opt{display:block;width:100%;text-align:left;background:var(--bg);color:var(--ink);border:1.5px solid var(--line);padding:12px 14px;margin:8px 0}
+.opt:hover{border-color:var(--accent)}
+button:focus-visible{outline:3px solid var(--warm);outline-offset:2px}
+.bar{height:8px;background:var(--line);border-radius:4px;margin:0 0 18px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--warm);width:0;transition:width .3s}
+.q{font-size:20px;font-weight:600;margin:0 0 6px}
+.result{border-left:6px solid var(--warm);padding:4px 0 4px 16px;margin-top:6px}
+.result ul{padding-left:20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.grid button{min-height:72px;background:var(--bg);color:var(--ink);border:1.5px solid var(--line);border-radius:10px;font:600 15px Onest,system-ui,sans-serif;cursor:pointer;padding:8px}
+.grid button:hover{border-color:var(--accent)}
+.card{background:var(--bg);border:1.5px dashed var(--line);border-radius:10px;padding:16px;font-size:20px;font-weight:600;margin:12px 0}
+.fb{min-height:52px;font-weight:600}
+.fb.ok{color:var(--good)}.fb.no{color:var(--bad)}
+.timer{font-size:clamp(64px,18vw,104px);font-weight:800;text-align:center;letter-spacing:-.03em;font-variant-numeric:tabular-nums;margin:6px 0}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0}
+input[type=text]{width:100%;font:400 17px Onest,system-ui,sans-serif;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+label.chk{display:flex;gap:12px;align-items:flex-start;padding:12px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+label.chk input{width:22px;height:22px;margin-top:3px;accent-color:var(--accent);flex:none}
+label.chk small{display:block;color:var(--muted)}
+.mode{padding:6px 12px;font-size:14px}
+.mode[aria-pressed=true]{background:var(--warm);color:#14302b;border-color:var(--warm)}
+</style>
+</head>
+<body>
+<main>
+<h1>Тайм-менеджмент і боротьба з прокрастинацією</h1>
+<p class="lead">Дві короткі активності: з’ясуйте свій стиль зволікання та потренуйте розстановку пріоритетів. Разом близько 7 хвилин.</p>
+
+<nav role="tablist" aria-label="Активності">
+<button role="tab" data-t="test" aria-selected="true">1. Ваш стиль</button>
+<button role="tab" data-t="matrix" aria-selected="false">2. Пріоритети</button>
+</nav>
+
+<section id="test" class="on" role="tabpanel">
+<h2>Чому я відкладаю?</h2>
+<p class="lead">Оберіть відповідь, яка найближча до вас. Правильних відповідей немає.</p>
+<div class="bar"><i id="tbar"></i></div>
+<div id="tbox"></div>
+</section>
+
+<section id="matrix" role="tabpanel">
+<h2>Матриця Ейзенхауера</h2>
+<p class="lead">Розподіліть справи за терміновістю та важливістю. Після кожної відповіді буде пояснення.</p>
+<div class="card" id="mcard"></div>
+<div class="grid" id="mgrid">
+<button data-q="1">Термінове й важливе<br><small>зробити зараз</small></button>
+<button data-q="2">Важливе, не термінове<br><small>запланувати</small></button>
+<button data-q="3">Термінове, не важливе<br><small>делегувати чи скоротити</small></button>
+<button data-q="4">Ні термінове, ні важливе<br><small>прибрати</small></button>
+</div>
+<div class="fb" id="mfb" aria-live="polite"></div>
+<div id="mend"></div>
+</section>
+
+</main>
+
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)};
+/* tabs */
+var tabs=[].slice.call(document.querySelectorAll('nav button'));
+function show(id){tabs.forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===id)});
+document.querySelectorAll('section').forEach(function(s){s.classList.toggle('on',s.id===id)})}
+tabs.forEach(function(b){b.onclick=function(){show(b.dataset.t);try{location.hash=b.dataset.t}catch(e){}}});
+var h=(location.hash||'').slice(1);if(['test','matrix'].indexOf(h)>-1)show(h);
+
+/* quiz */
+var Q=[
+["Вам дали завдання на тиждень. Що найімовірніше станеться?",["Довго обмірковую, як зробити ідеально, і не починаю","Уявляю, який чудовий буде результат, але до справи не доходжу","Починаю, але щокілька хвилин перевіряю телефон"]],
+["Дедлайн завтра, а робота не готова. Ваша реакція?",["Страх, що вийде недосконало","Сподіваюся, що встигну в останню ніч","Складно зосередитись, бо навколо багато цікавого"]],
+["Що найчастіше відволікає?",["Постійні правки й дрібні покращення","Мрії та плани на майбутнє","Соцмережі, повідомлення, відео"]],
+["Що допомогло б вам найбільше?",["Дозвіл на «достатньо добре»","Чіткі маленькі кроки й терміни","Тиша та вимкнені сповіщення"]]];
+var T={0:["Перфекціоніст","Ви зволікаєте через страх помилки.",["Домовтеся із собою про «чернетку» — перша версія має бути поганою","Ставте обмеження часу на кожен етап","Оцінюйте за критерієм «достатньо добре»"]],
+1:["Мрійник","Ви зволікаєте, бо результат здається далеким і абстрактним.",["Розбийте ціль на кроки по 15–30 хвилин","Призначайте конкретний день і час для кожного кроку","Розкажіть комусь про свій план — це додає відповідальності"]],
+2:["Той, що відволікається","Ви зволікаєте через зовнішні подразники.",["Вимкніть сповіщення й покладіть телефон в інше місце","Працюйте сесіями Помодоро по 25 хвилин","Тримайте на столі лише те, що потрібно для справи"]]};
+var qi=0,sc=[0,0,0];
+function ren(){var b=$('#tbox');$('#tbar').style.width=(qi/Q.length*100)+'%';
+if(qi>=Q.length){var m=sc.indexOf(Math.max.apply(null,sc)),r=T[m];
+b.innerHTML='<div class="result"><h2>'+r[0]+'</h2><p>'+r[1]+'</p><ul>'+r[2].map(function(x){return'<li>'+x+'</li>'}).join('')+'</ul></div><div class="row" style="justify-content:flex-start"><button class="btn ghost" id="rt">Пройти ще раз</button></div>';
+$('#rt').onclick=function(){qi=0;sc=[0,0,0];ren()};return}
+var q=Q[qi];b.innerHTML='<p class="q">'+(qi+1)+' з '+Q.length+'. '+q[0]+'</p>';
+q[1].forEach(function(t,i){var o=document.createElement('button');o.className='opt';o.textContent=t;o.onclick=function(){sc[i]++;qi++;ren()};b.appendChild(o)})}
+ren();
+
+/* matrix */
+var M=[["Підготуватися до іспиту, який завтра",1,"Є жорсткий термін і від цього залежить результат."],
+["Скласти план на наступний тиждень",2,"Важливо для результату, але не горить — саме такі справи варто закладати в календар."],
+["Відповісти на повідомлення в чаті, які не стосуються справи",3,"Здаються терміновими через сповіщення, але мало впливають на цілі."],
+["Годину гортати стрічку соцмережі",4,"Не терміново й не важливо — це зловмисник часу."],
+["Здати курсову роботу післязавтра",1,"Термін близько, а наслідки серйозні."],
+["Дивитися серіал до ночі, коли є справи",4,"Відпочинок потрібен, але тут він витісняє справи."]];
+var mi=0,ms=0,lock=false;
+function mr(){lock=false;$('#mfb').textContent='';$('#mfb').className='fb';
+if(mi>=M.length){$('#mcard').textContent='Готово! Результат: '+ms+' з '+M.length;$('#mgrid').style.display='none';
+$('#mend').innerHTML='<p class="lead">Головне правило: більше часу віддавайте квадранту 2 — тоді в квадранті 1 буде менше авралів.</p><button class="btn ghost" id="mre">Почати знову</button>';
+$('#mre').onclick=function(){mi=0;ms=0;$('#mgrid').style.display='';$('#mend').innerHTML='';mr()};return}
+$('#mcard').textContent=M[mi][0]}
+mr();
+document.querySelectorAll('#mgrid button').forEach(function(b){b.onclick=function(){
+if(lock)return;lock=true;var t=M[mi],ok=+b.dataset.q===t[1];if(ok)ms++;
+var f=$('#mfb');f.className='fb '+(ok?'ok':'no');
+f.innerHTML=(ok?'Вірно. ':'Не зовсім. Правильно: квадрант '+t[1]+'. ')+t[2]+' <button class="btn ghost" id="nx" style="margin-left:6px">Далі</button>';
+$('#nx').onclick=function(){mi++;mr()}}});
+
+})();
+</script>
+</body>
+</html>
