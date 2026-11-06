@@ -102,11 +102,15 @@ var Q=[
 var T={0:["Перфекціоніст","Ви зволікаєте через страх помилки.",["Домовтеся із собою про «чернетку» — перша версія має бути поганою","Ставте обмеження часу на кожен етап","Оцінюйте за критерієм «достатньо добре»"]],
 1:["Мрійник","Ви зволікаєте, бо результат здається далеким і абстрактним.",["Розбийте ціль на кроки по 15–30 хвилин","Призначайте конкретний день і час для кожного кроку","Розкажіть комусь про свій план — це додає відповідальності"]],
 2:["Той, що відволікається","Ви зволікаєте через зовнішні подразники.",["Вимкніть сповіщення й покладіть телефон в інше місце","Працюйте сесіями Помодоро по 25 хвилин","Тримайте на столі лише те, що потрібно для справи"]]};
+function cp(t,btn){function ok(){btn.textContent='Скопійовано'}
+function fb(){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){btn.textContent='Не вдалося, перепишіть вручну'}document.body.removeChild(a)}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb)}else fb()}
 var qi=0,sc=[0,0,0];
 function ren(){var b=$('#tbox');$('#tbar').style.width=(qi/Q.length*100)+'%';
 if(qi>=Q.length){var m=sc.indexOf(Math.max.apply(null,sc)),r=T[m];
-b.innerHTML='<div class="result"><h2>'+r[0]+'</h2><p>'+r[1]+'</p><ul>'+r[2].map(function(x){return'<li>'+x+'</li>'}).join('')+'</ul></div><div class="row" style="justify-content:flex-start"><button class="btn ghost" id="rt">Пройти ще раз</button></div>';
-$('#rt').onclick=function(){qi=0;sc=[0,0,0];ren()};return}
+b.innerHTML='<div class="result"><h2>'+r[0]+'</h2><p>'+r[1]+'</p><ul>'+r[2].map(function(x){return'<li>'+x+'</li>'}).join('')+'</ul></div><div class="row" style="justify-content:flex-start"><button class="btn" id="cp">Скопіювати мій результат</button><button class="btn ghost" id="rt">Пройти ще раз</button></div><p class="lead">Натисніть «Скопіювати» і вставте результат на спільну дошку.</p>';
+$('#rt').onclick=function(){qi=0;sc=[0,0,0];ren()};
+$('#cp').onclick=function(){cp('Мій стиль зволікання: '+r[0],this)};return}
 var q=Q[qi];b.innerHTML='<p class="q">'+(qi+1)+' з '+Q.length+'. '+q[0]+'</p>';
 q[1].forEach(function(t,i){var o=document.createElement('button');o.className='opt';o.textContent=t;o.onclick=function(){sc[i]++;qi++;ren()};b.appendChild(o)})}
 ren();
